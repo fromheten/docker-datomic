@@ -9,6 +9,8 @@ and immediately usable image can be built.
 2. Make sure that `DATOMIC_REPO_USER`, `DATOMIC_REPO_PASS`and `DATOMIC_LICENSE` are correctly defined in your environment.
 3. Execute `make`.
 
+For pushing the image to quay refer to the documentation of quay: https://docs.quay.io/solution/getting-started.html
+
 # Usage
 
 You can run this as standalone docker container, or in a docker-compose configuration.
