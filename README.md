@@ -1,44 +1,32 @@
-# Datomic Pro Starter
+# Datomic [![Docker Repository on Quay](https://quay.io/repository/nedap/datomic/status?token=544ebbd3-26d2-496b-9c2a-d054f14950f6 "Docker Repository on Quay")](https://quay.io/repository/nedap/datomic)
+This Dockerfile defines an image
+for [Datomic Pro Starter Edition](http://www.datomic.com/). It requires 
+the datomic credentials as arguments for the build so that a complete 
+and immediately usable image can be built.
 
-This Dockerfile defines a base image
-for [Datomic Pro Starter Edition](http://www.datomic.com/). It defines
-the necessary automation steps for running Datomic, while deferring
-all privileged, user-specific configuration to a derived image via
-**ONBUILD** instructions.
+# Building
+1. Clone this repository and cd into it.
+2. Make sure that `DATOMIC_REPO_USER`, `DATOMIC_REPO_PASS`and `DATOMIC_LICENSE` are correctly defined in your environment.
+3. Execute `make`.
 
-This approach makes it trivial to customize your own Dockerfile to run
-any supported Datomic configuration. To do so, you need only to follow
-these steps:
+# Usage
 
-1. Create a `Dockerfile` that is based **FROM** this image
-2. Create a `.credentials` file containing your http user and password
-   for downloading from **my.datomic.com** in the form `user:pass`
-3. Create a `config` folder where your `Dockerfile` resides and place
-   your Datomic transactor.properties config file(s) within it
-4. Add a **CMD** instruction in your `Dockerfile` with the relative
-   path to that file e.g. **config/riak.properties**
+You can run this as standalone docker container, or in a docker-compose configuration.
 
-No other configuration is necessary. Simply **docker build** and
-**docker run** your image.
+The Dockerfile **EXPOSES** ports 4334-4336 and establises a **VOLUME** at `/opt/datomic-pro-<DATOMIC_VERSION>/data`.
 
-## Example Folder Structure
+To start datomic, execute the following command in the container: 
+`./bin/transactor <path_to_transactor.properties>`
 
-    .
-    ├── .credentials
-    ├── Dockerfile
-    └── config
-        └── dev-transactor.properties
-
-## Example Dockerfile
-
-    FROM pointslope/datomic-pro-starter:0.9.5561
-    MAINTAINER John Doe "jdoe@example.org"
-    CMD ["config/dev-transactor.properties"]
-
-## Miscellany
-
-The Dockerfile **EXPOSES** port 4334 and establises a **VOLUME** at
-`/opt/datomic-pro-$DATOMIC_VERSION/data`.
+### `docker-compose.yml`
+```yml
+datomic:
+    image: quay.io/nedap/datomic:latest
+    command: ["./bin/transactor", "transactor.properties"]
+    ports:
+      - 4334-4336
+```
+Starts with `docker-compose up datomic`.
 
 ## License
 
