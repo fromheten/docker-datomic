@@ -1,3 +1,4 @@
+# Use `make` to create a new docker image (e.g. for quay)
 DOCKER_IMAGE=datomic
 DOCKER_TAG?=$(shell ./datomic-version)
 

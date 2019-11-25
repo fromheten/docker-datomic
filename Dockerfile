@@ -1,7 +1,5 @@
 FROM clojure:lein-2.6.1-alpine
 
-# 1. Make sure to add these arguments to docker
-# when building the container
 ARG DATOMIC_REPO_USER
 ARG DATOMIC_REPO_PASS
 ARG DATOMIC_LICENSE
@@ -26,5 +24,4 @@ VOLUME $DATOMIC_DATA
 
 EXPOSE 4334 4335 4336
 
-# 2. To start datomic execute the following command in the container:
-# ./bin/transactor <path_to_transactor.properties>
+CMD ./bin/transactor ./transactor.properties
