@@ -1,4 +1,4 @@
-FROM clojure:lein-2.6.1-alpine
+FROM clojure:lein-2.9.1-alpine
 
 ARG DATOMIC_REPO_USER
 ARG DATOMIC_REPO_PASS
@@ -20,8 +20,12 @@ RUN echo DATOMIC HOME: $DATOMIC_HOME
 COPY transactor.properties transactor-tmp.properties
 RUN envsubst < transactor-tmp.properties > transactor.properties
 
+COPY entrypoint.sh entrypoint.sh
+COPY create-dbs.clj create-dbs.clj
+
 VOLUME $DATOMIC_DATA
 
 EXPOSE 4334 4335 4336
 
-CMD ./bin/transactor ./transactor.properties
+CMD ["./bin/transactor", "./transactor.properties"]
+ENTRYPOINT [ "./entrypoint.sh" ]
