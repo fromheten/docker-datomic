@@ -32,6 +32,8 @@ datomic:
 ```
 Starts with `docker-compose up datomic`, will create 2 databases (iff non-existant) `example` and `antoher`
 
+connect to `<DBNAME>,datomic:dev://datomic:4334/<DBNAME>?password=123`.
+
 ## License
 
 The MIT License (MIT)

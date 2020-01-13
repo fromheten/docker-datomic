@@ -4,7 +4,7 @@ ARG DATOMIC_REPO_USER
 ARG DATOMIC_REPO_PASS
 ARG DATOMIC_LICENSE
 
-ENV DATOMIC_VERSION 0.9.5561
+ENV DATOMIC_VERSION 0.9.6021
 ENV DATOMIC_HOME /opt/datomic-pro-$DATOMIC_VERSION
 ENV DATOMIC_DATA $DATOMIC_HOME/data
 
@@ -22,6 +22,8 @@ RUN envsubst < transactor-tmp.properties > transactor.properties
 
 COPY entrypoint.sh entrypoint.sh
 COPY create-dbs.clj create-dbs.clj
+
+HEALTHCHECK --start-period=5s CMD curl -k http://localhost:9999/health
 
 VOLUME $DATOMIC_DATA
 
