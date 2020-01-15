@@ -1,5 +1,5 @@
 # Use `make` to create a new docker image (e.g. for quay)
-DOCKER_IMAGE=datomic
+DOCKER_IMAGE=nedap/datomic
 DOCKER_TAG?=$(shell ./datomic-version)
 
 .PHONY: all clean info

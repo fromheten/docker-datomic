@@ -1,7 +1,7 @@
 # Datomic [![Docker Repository on Quay](https://quay.io/repository/nedap/datomic/status?token=544ebbd3-26d2-496b-9c2a-d054f14950f6 "Docker Repository on Quay")](https://quay.io/repository/nedap/datomic)
 This Dockerfile defines an image
-for [Datomic Pro Starter Edition](http://www.datomic.com/). It requires 
-the datomic credentials as arguments for the build so that a complete 
+for [Datomic Pro Starter Edition](http://www.datomic.com/). It requires
+the datomic credentials as arguments for the build so that a complete
 and immediately usable image can be built.
 
 # Building
@@ -17,7 +17,7 @@ You can run this as standalone docker container, or in a docker-compose configur
 
 The Dockerfile **EXPOSES** ports 4334-4336 and establises a **VOLUME** at `/opt/datomic-pro-<DATOMIC_VERSION>/data`.
 
-To start datomic, execute the following command in the container: 
+To start datomic, execute the following command in the container:
 `./bin/transactor <path_to_transactor.properties>`
 
 ### `docker-compose.yml`
@@ -25,10 +25,14 @@ To start datomic, execute the following command in the container:
 datomic:
     image: quay.io/nedap/datomic:latest
     command: ["./bin/transactor", "transactor.properties"]
+    environment:
+      DATABASES: "example,another"
     ports:
       - 4334-4336
 ```
-Starts with `docker-compose up datomic`.
+Starts with `docker-compose up datomic`, will create 2 databases (iff non-existant) `example` and `antoher`
+
+connect to `<DBNAME>,datomic:dev://datomic:4334/<DBNAME>?password=123`.
 
 ## License
 

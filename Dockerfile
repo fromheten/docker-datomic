@@ -1,10 +1,10 @@
-FROM clojure:lein-2.6.1-alpine
+FROM clojure:lein-2.9.1-alpine
 
 ARG DATOMIC_REPO_USER
 ARG DATOMIC_REPO_PASS
 ARG DATOMIC_LICENSE
 
-ENV DATOMIC_VERSION 0.9.5561
+ENV DATOMIC_VERSION 0.9.6021
 ENV DATOMIC_HOME /opt/datomic-pro-$DATOMIC_VERSION
 ENV DATOMIC_DATA $DATOMIC_HOME/data
 
@@ -20,8 +20,14 @@ RUN echo DATOMIC HOME: $DATOMIC_HOME
 COPY transactor.properties transactor-tmp.properties
 RUN envsubst < transactor-tmp.properties > transactor.properties
 
+COPY entrypoint.sh entrypoint.sh
+COPY create-dbs.clj create-dbs.clj
+
+HEALTHCHECK --start-period=5s CMD curl -k http://localhost:9999/health
+
 VOLUME $DATOMIC_DATA
 
 EXPOSE 4334 4335 4336
 
-CMD ./bin/transactor ./transactor.properties
+CMD ["./bin/transactor", "./transactor.properties"]
+ENTRYPOINT [ "./entrypoint.sh" ]
