@@ -1,0 +1,64 @@
+# Clojure CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-clojure/ for more details
+#
+version: 2.1
+
+executors:
+  docker-executor:
+    docker:
+      - image: docker
+    environment:
+      IMAGE_NAME: "quay.io/nedap/datomic"
+
+jobs:
+  build-image:
+    executor: docker-executor
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: >
+          docker build
+          --build-arg DATOMIC_REPO_USER
+          --build-arg DATOMIC_REPO_PASS
+          --build-arg DATOMIC_LICENSE
+          -t $IMAGE_NAME:$CIRCLE_TAG .
+      - run:
+          name: Archive Docker image
+          command: docker save -o image.tar $IMAGE_NAME:$CIRCLE_TAG
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./image.tar
+
+  deploy-image:
+    executor: docker-executor
+    steps:
+      - setup_remote_docker
+      - run: |
+          echo "$DOCKER_PASSWORD" | docker login quay.io -u "$DOCKER_USERNAME" --password-stdin
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: docker load -i /tmp/workspace/image.tar
+      - run: docker push $IMAGE_NAME:$CIRCLE_TAG
+
+workflows:
+  version: 2
+  deploy-to-quay:
+    jobs:
+      - build-image:
+          context: JFrog
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /\d+\.\d+\.\d+$/
+      - deploy-image:
+          context: Quay
+          requires:
+            - build-image
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /\d+\.\d+\.\d+$/

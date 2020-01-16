@@ -5,11 +5,9 @@ the datomic credentials as arguments for the build so that a complete
 and immediately usable image can be built.
 
 # Building
-1. Clone this repository and cd into it.
-2. Make sure that `DATOMIC_REPO_USER`, `DATOMIC_REPO_PASS`and `DATOMIC_LICENSE` are correctly defined in your environment.
-3. Execute `make`.
-
-For pushing the image to quay refer to the documentation of quay: https://docs.quay.io/solution/getting-started.html
+0. Tag commit with current transactor version.
+1. push commit / tag
+2. CircleCI will build a release and deploy it to `quay.io/nedap/datomic`
 
 # Usage
 
