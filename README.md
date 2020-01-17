@@ -20,13 +20,19 @@ To start datomic, execute the following command in the container:
 
 ### `docker-compose.yml`
 ```yml
-datomic:
-    image: quay.io/nedap/datomic:latest
+services:
+  datomic:
+    image: quay.io/nedap/datomic:0.9.6021
     command: ["./bin/transactor", "transactor.properties"]
     environment:
       DATABASES: "example,another"
+    volumes:
+      - datomic-data:/opt/datomic-pro-0.9.6021/data
     ports:
       - 4334-4336
+
+volumes:
+  datomic-data:
 ```
 Starts with `docker-compose up datomic`, will create 2 databases (iff non-existant) `example` and `antoher`
 
