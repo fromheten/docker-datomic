@@ -22,12 +22,12 @@ To start datomic, execute the following command in the container:
 ```yml
 services:
   datomic:
-    image: quay.io/nedap/datomic:1.0.6202
+    image: quay.io/nedap/datomic:1.0.6202.0
     command: ["./bin/transactor", "transactor.properties"]
     environment:
       DATABASES: "example,another"
     volumes:
-      - datomic-data:/opt/datomic-pro-1.0.6202/data
+      - datomic-data:/opt/datomic-pro-1.0.6202.0/data
     ports:
       - 4334-4336
 
