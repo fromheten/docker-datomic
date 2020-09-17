@@ -27,7 +27,7 @@ services:
     environment:
       DATABASES: "example,another"
     volumes:
-      - datomic-data:/opt/datomic-pro-1.0.6202.0/data
+      - datomic-data:/opt/datomic-pro-1.0.6202/data
     ports:
       - 4334-4336
 
