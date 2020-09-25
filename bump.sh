@@ -6,5 +6,6 @@ if [[ $# -eq 0 ]]; then
     exit 1;
 fi
 
-sed -i '' -e "s/^ENV DATOMIC_VERSION [0-9]\.[0-9]\.[0-9]*/ENV DATOMIC_VERSION $1/" Dockerfile
-sed -i '' -e "s/datomic-pro-starter:[0-9]\.[0-9]\.[0-9]*/datomic-pro-starter:$1/" README.md
+sed -i '' -E -e "s/^ENV DATOMIC_VERSION (\.?[0-9]+)+/ENV DATOMIC_VERSION ${1%.*}/" Dockerfile
+sed -i '' -E -e "s/quay.io\/nedap\/datomic:(\.?[0-9]+)+/quay.io\/nedap\/datomic:$1/" README.md
+sed -i '' -E -e "s/datomic-pro-(\.?[0-9]+)+/datomic-pro-${1%.*}/" README.md
